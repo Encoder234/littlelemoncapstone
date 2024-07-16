@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -48,11 +49,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
 
-val karlaFontFamily = FontFamily(Font(R.font.karla_regular))
+
 
 @Composable
 fun Onboarding(navController: NavHostController, sharedPreferences: SharedPreferences) {
@@ -67,6 +70,8 @@ fun Onboarding(navController: NavHostController, sharedPreferences: SharedPrefer
                 var showWelcomeMessage by rememberSaveable { mutableStateOf(false) }
                 var welcomeMessage by rememberSaveable { mutableStateOf("") }
 
+
+                //checkIfAlreadyRegistered(navController,sharedPreferences);
 
                 Header();
                 CustomText();
@@ -86,7 +91,7 @@ fun Onboarding(navController: NavHostController, sharedPreferences: SharedPrefer
                 )
 
                 // Add Clear Data Button for demonstration
-                ClearDataButton(sharedPreferences)
+                //ClearDataButton(sharedPreferences)
 
             } // Column();
 } // Onboarding()
@@ -118,7 +123,7 @@ fun Info() {
             .fillMaxWidth()
             //.padding(30.dp)
             .background(color = colorResource(id = R.color.white))
-            .padding(top = 50.dp, bottom = 50.dp, start = 15.dp)
+            .padding(top = 60.dp, bottom = 50.dp, start = 15.dp)
     ) {
         Text(
             text = "Personal information",
@@ -251,16 +256,19 @@ fun RegisterButton(
             .fillMaxWidth()
             .padding(16.dp)
             .background(Color.Yellow, RoundedCornerShape(8.dp)) // Rounded corners with 8dp radius
-            .border(1.dp, Color(0xFFFF4500), RoundedCornerShape(8.dp)), // Red-orange border with rounded corners
+            .border(1.dp, Color(LittleLemonColor.redorange.value), RoundedCornerShape(8.dp)), // Red-orange border with rounded corners
         contentPadding = PaddingValues(vertical = 12.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.yellow)
 
     ) {
         Text(
             "Register",
+
             style = TextStyle(
                 fontFamily = karlaFontFamily,
-                fontSize = 18.sp
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp, color = LittleLemonColor.black
+
             )
         )
     }
@@ -344,5 +352,3 @@ fun displaySharedPreferences(sharedPreferences: SharedPreferences) {
     }
     Log.d("-- content: --", content.toString())
 }
-
-

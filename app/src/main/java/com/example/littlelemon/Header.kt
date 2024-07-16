@@ -25,7 +25,7 @@ fun Header() {
             contentDescription = "Little Lemon Logo",
             contentScale = ContentScale.Fit,
             //modifier = Modifier.fillMaxWidth(0.5F).padding(horizontal = 20.dp, vertical = 20.dp)
-            modifier = Modifier.fillMaxWidth().statusBarsPadding().height(105.dp).padding(top = 10.dp, bottom = 30.dp)
+            modifier = Modifier.fillMaxWidth().statusBarsPadding().height(105.dp).padding(top = 30.dp, bottom = 30.dp)
         )
     }
 } //Header
