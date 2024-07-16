@@ -1,5 +1,7 @@
 package com.example.littlelemon
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
@@ -53,14 +55,17 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 val karlaFontFamily = FontFamily(Font(R.font.karla_regular))
 
 @Composable
-fun Onboarding(navController: NavHostController) {
+fun Onboarding(navController: NavHostController, sharedPreferences: SharedPreferences) {
             Column (modifier = Modifier.fillMaxSize() ) {
+
                 val firstNameState = rememberSaveable { mutableStateOf("") }
                 val lastNameState = rememberSaveable { mutableStateOf("") }
                 val emailState = rememberSaveable { mutableStateOf("") }
 
-                var showErrorDialog by remember { mutableStateOf(false) }
-                var errorMessage by remember { mutableStateOf("") }
+                var showErrorDialog by rememberSaveable { mutableStateOf(false) }
+                var errorMessage by rememberSaveable { mutableStateOf("") }
+                var showWelcomeMessage by rememberSaveable { mutableStateOf(false) }
+                var welcomeMessage by rememberSaveable { mutableStateOf("") }
 
 
                 Header();
@@ -75,8 +80,13 @@ fun Onboarding(navController: NavHostController) {
                     showErrorDialog = showErrorDialog,
                     errorMessage = errorMessage,
                     onShowErrorDialogChange = { showErrorDialog = it },
-                    onErrorMessageChange = { errorMessage = it }
+                    onErrorMessageChange = { errorMessage = it },
+                    sharedPreferences = sharedPreferences,
+                    onWelcomeMessageChange = { welcomeMessage = it; showWelcomeMessage = true }
                 )
+
+                // Add Clear Data Button for demonstration
+                ClearDataButton(sharedPreferences)
 
             } // Column();
 } // Onboarding()
@@ -203,9 +213,14 @@ fun RegisterButton(
     showErrorDialog: Boolean,
     errorMessage: String,
     onShowErrorDialogChange: (Boolean) -> Unit,
-    onErrorMessageChange: (String) -> Unit
+    onErrorMessageChange: (String) -> Unit,
+    sharedPreferences: SharedPreferences,
+    onWelcomeMessageChange: (String) -> Unit
 ) {
     val karlaFontFamily = FontFamily(Font(R.font.karla_regular))
+
+    var showWelcomeDialog by remember { mutableStateOf(false) }
+    var welcomeMessage by remember { mutableStateOf("") }
 
     Button(
         onClick = {
@@ -218,12 +233,18 @@ fun RegisterButton(
                 onErrorMessageChange("Invalid email format. Please enter a valid email address.")
                 onShowErrorDialogChange(true)
             } else {
-                // Perform registration logic here
-                // For demo, just print the values
-                println("Registration successful with:")
-                println("First Name: ${firstNameState.value}")
-                println("Last Name: ${lastNameState.value}")
-                println("Email: ${emailState.value}")
+
+                // Save data to SharedPreferences
+                with(sharedPreferences.edit()) {
+                    putString("firstName", firstNameState.value)
+                    putString("lastName", lastNameState.value)
+                    putString("email", emailState.value)
+                    apply()
+                }
+
+                onWelcomeMessageChange("Welcome Back ${firstNameState.value} ${lastNameState.value}")
+                showWelcomeDialog = true;
+                welcomeMessage = "Registration successful!"
             }
         },
         modifier = Modifier
@@ -264,12 +285,64 @@ fun RegisterButton(
             }
         )
     }
+
+    if (showWelcomeDialog) {
+        AlertDialog(
+            onDismissRequest = { showWelcomeDialog = false },
+            title = { Text("") },
+            text = { Text(welcomeMessage) },
+            confirmButton = {
+                Button(
+                    onClick = { showWelcomeDialog = false },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.yellow)
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
 }
 
 fun isValidEmail(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
+@Composable
+fun ClearDataButton(sharedPreferences: SharedPreferences) {
+    Button(
+        onClick = {
 
+            displaySharedPreferences(sharedPreferences);
+
+            // Clear all data in SharedPreferences
+            with(sharedPreferences.edit()) {
+                clear()
+                apply()
+            }
+
+        },
+        modifier = Modifier
+            .padding(16.dp)
+            .border(
+                width = 1.dp,
+                color = Color.Red.copy(alpha = 0.7f),
+                shape = RoundedCornerShape(8.dp) // Rounded corners with 8dp radius
+            )
+    ) {
+        Text("Clear Data")
+    }
+}
+
+
+fun displaySharedPreferences(sharedPreferences: SharedPreferences) {
+    val keys = sharedPreferences.all.keys
+    val content = StringBuilder()
+    for (key in keys) {
+        val value = sharedPreferences.all[key]
+        content.append("$key: $value\n")
+    }
+    Log.d("-- content: --", content.toString())
+}
 
 
