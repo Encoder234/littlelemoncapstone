@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
 @Composable
-fun MenuBreakdown() {
+fun MenuBreakdown( selectType: (String) -> Unit ) {
     Column(
         modifier = Modifier
             //.fillMaxSize()
@@ -45,10 +45,10 @@ fun MenuBreakdown() {
                 modifier = Modifier.fillMaxWidth().padding(top = 43.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                ProductButton(text = "Starters")
-                ProductButton(text = "Mains")
-                ProductButton(text = "Desserts")
-                ProductButton(text = "Drinks")
+                ProductButton(text = "Starters", selectType)
+                ProductButton(text = "Mains", selectType)
+                ProductButton(text = "Desserts", selectType)
+                ProductButton(text = "Drinks", selectType)
             }
         } //Box
 
@@ -61,9 +61,21 @@ fun MenuBreakdown() {
 }
 
 @Composable
-fun ProductButton(text: String) {
+fun ProductButton(text: String, selectType: (String) -> Unit) {
     Button(
-        onClick = { buttonClickHandler(text) },
+        onClick = {
+            when (text) {
+                "Starters" -> selectType("starters")
+                "Mains" -> selectType("mains")
+                "Desserts" -> selectType("desserts")
+                "Drinks" -> selectType("all")
+                else ->  selectType("all")
+            }
+
+            //buttonClickHandler(text, selectType)
+
+        },
+
         shape = RoundedCornerShape(percent = 50), // 50% percent makes it circular
         colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.lightgray),
         modifier = Modifier.width(100.dp).padding(2.dp) // Adjust width as needed
@@ -75,5 +87,5 @@ fun ProductButton(text: String) {
 @Preview(showBackground = true)
 @Composable
 fun MenuBreakdownPreview() {
-    MenuBreakdown()
+    //MenuBreakdown()
 }

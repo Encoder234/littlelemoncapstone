@@ -21,6 +21,8 @@ data class MenuItems(
 
 )
 
+data class Products(val items: List<MenuItems>)
+
 @Dao
 interface MenuItemDao {
     @Query("SELECT * FROM MenuItems")

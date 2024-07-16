@@ -39,7 +39,6 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 fun Menu(dishes: List<MenuItems>) {
 
 
-
     Column {
         /*LazyColumn {
             for (item in globalMenu) {
@@ -58,7 +57,7 @@ fun Menu(dishes: List<MenuItems>) {
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp)
         ) {
-            itemsIndexed(globalMenu) { index, item ->
+            itemsIndexed(dishes) { index, item ->
 
                 DisplayMenu(item)
                 /*Row(
