@@ -34,7 +34,7 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 
 
 @Composable
-fun UpperDeck() {
+fun UpperDeck(  search: (String) -> Unit ) {
 
 
 
@@ -119,7 +119,9 @@ fun UpperDeck() {
             onValueChange = { searchQuery.value = it },
             label = { Text("Enter search phrase", color = Color.Black) },
             leadingIcon = {
-                IconButton(onClick = { /* Handle search action */ }) {
+                IconButton(onClick = { /* Handle search action */
+                    search(searchQuery.value)
+                }) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Enter search phrase",
@@ -155,5 +157,5 @@ fun UpperDeck() {
 @Preview(showBackground = true)
 @Composable
 fun UpperPanelDeck() {
-    UpperDeck()
+    //UpperDeck()
 }

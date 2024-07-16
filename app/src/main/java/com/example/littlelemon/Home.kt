@@ -34,7 +34,9 @@ val allMenu: MutableState<List<MenuItems>> = mutableStateOf(globalMenu)
 fun Home(navController: NavHostController) {
 
     var filteredMenu by remember { mutableStateOf(emptyList<MenuItems>()) }
-    var selectedCategory by remember { mutableStateOf<String>("mains") }
+    var selectedCategory by remember { mutableStateOf<String>("all") }
+
+    var searchStr by remember { mutableStateOf<String>("") }
 
     Log.d("-- selectedCategory --", selectedCategory.toString())
 
@@ -45,13 +47,23 @@ fun Home(navController: NavHostController) {
         } else {
             filteredMenu = allMenu.value.filter { it.category == selectedCategory }
         }
+        onDispose {}
+    }
 
+    //For search
+    DisposableEffect(searchStr) {
+        if (searchStr.isNotEmpty()) {
+            Log.d("--- searchPhrase ----> ", searchStr)
+            filteredMenu = globalMenu.filter { it.title.contains(searchStr, ignoreCase = true) }
+        } else {
+            filteredMenu = globalMenu
+        }
         onDispose { }
     }
 
     Column (modifier = Modifier.fillMaxSize() ) {
         HomeTop(navController);
-        UpperDeck();
+        UpperDeck{search -> searchStr = search }
         MenuBreakdown{selectedType -> selectedCategory = selectedType }
         //Menu(globalMenu)
 
