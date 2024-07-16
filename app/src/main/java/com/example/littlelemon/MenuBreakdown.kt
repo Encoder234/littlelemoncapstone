@@ -1,5 +1,6 @@
 package com.example.littlelemon
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +27,8 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 fun MenuBreakdown() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            //.fillMaxSize()
+            //.background(color = Color.Gray)
             .padding(0.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
@@ -47,9 +50,12 @@ fun MenuBreakdown() {
                 ProductButton(text = "Desserts")
                 ProductButton(text = "Drinks")
             }
+        } //Box
 
-        }
-
+        Divider(
+            modifier = Modifier.padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 5.dp),
+            thickness = 1.dp, color =  LittleLemonColor.lightgray
+        )
 
     }
 }

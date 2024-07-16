@@ -94,7 +94,7 @@ fun Profile(navController: NavHostController, sharedPreferences: SharedPreferenc
         )*/
 
         // Add Clear Data Button for demonstration
-        ClearsharedPref(sharedPreferences)
+        ClearsharedPref(navController,sharedPreferences)
 
     } // Column();
 } // Onboarding()
@@ -264,7 +264,10 @@ fun LogoutButton(
 }
 
 @Composable
-fun ClearsharedPref(sharedPreferences: SharedPreferences) {
+fun ClearsharedPref(navController: NavHostController, sharedPreferences: SharedPreferences) {
+
+    var goodbye by rememberSaveable { mutableStateOf(false) }
+
     Button(
         onClick = {
 
@@ -276,6 +279,9 @@ fun ClearsharedPref(sharedPreferences: SharedPreferences) {
                 apply()
             }
 
+            goodbye = true
+            navController.navigate("Onboarding");
+
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -285,8 +291,6 @@ fun ClearsharedPref(sharedPreferences: SharedPreferences) {
         contentPadding = PaddingValues(vertical = 12.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.yellow)
 
-
-
     ) {
         Text("Log out", style = TextStyle(
             fontFamily = karlaFontFamily,
@@ -295,5 +299,8 @@ fun ClearsharedPref(sharedPreferences: SharedPreferences) {
 
         ))
     }
+
+    if (goodbye)
+        showToast(message = "Bye!")
 }
 

@@ -79,6 +79,7 @@ fun Onboarding(navController: NavHostController, sharedPreferences: SharedPrefer
                 InputFields(firstNameState, lastNameState, emailState );
                 Spacer(modifier = Modifier.weight(1f)) // Spacer to push RegisterButton to the bottom
                 RegisterButton(
+                    navController = navController,
                     firstNameState = firstNameState,
                     lastNameState = lastNameState,
                     emailState = emailState,
@@ -212,6 +213,7 @@ fun InputFields(firstNameState: MutableState<String>,
 
 @Composable
 fun RegisterButton(
+    navController: NavHostController,
     firstNameState: MutableState<String>,
     lastNameState: MutableState<String>,
     emailState: MutableState<String>,
@@ -250,6 +252,9 @@ fun RegisterButton(
                 onWelcomeMessageChange("Welcome Back ${firstNameState.value} ${lastNameState.value}")
                 showWelcomeDialog = true;
                 welcomeMessage = "Registration successful!"
+
+
+
             }
         },
         modifier = Modifier
@@ -308,6 +313,9 @@ fun RegisterButton(
                 }
             }
         )
+
+        navController.navigate("Home")
+
     }
 
 }
