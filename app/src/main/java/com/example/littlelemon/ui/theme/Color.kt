@@ -7,6 +7,7 @@ object LittleLemonColor {
     val yellow = Color(0xFFF4CE14)
     val pink = Color(0xFFFBDABB)
     val cloud = Color(0xFFEDEFEE)
+    val lightgray = Color(0xFFBFBDB8)
     val charcoal = Color(0xFF333333)
     val black = Color(0xFF000000)
     val white = Color(0xFFFFFFFF)
