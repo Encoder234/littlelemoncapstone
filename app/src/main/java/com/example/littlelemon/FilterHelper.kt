@@ -1,6 +1,6 @@
 package com.example.littlelemon
 
-import android.util.Log
+
 
 class FilterHelper {
 
